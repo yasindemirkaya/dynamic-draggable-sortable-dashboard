@@ -183,6 +183,8 @@
       removeItem(val) {
         const index = this.layout.map(item => item.i).indexOf(val);
         this.layout.splice(index, 1);
+
+        this.index--;
       },
     },
   }
