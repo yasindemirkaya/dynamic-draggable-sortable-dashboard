@@ -8,7 +8,7 @@
       </div>
       {{ layout }}
       <!-- Grid Layout -->
-      <grid-layout v-if="layout != null" :layout.sync="layout" :col-num="100" :row-height="30" :is-draggable="true" :is-resizable="false" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
+      <grid-layout v-if="layout != null" :layout.sync="layout" :col-num="colNum" :row-height="30" :is-draggable="true" :is-resizable="false" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
         <grid-item v-for="item in layout" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" drag-allow-from=".vue-draggable-handle" drag-ignore-from=".no-drag">
           <div class="col-md-12 d-flex flex-column justify-content-center align-items-center custom-border p-3">
             <font-awesome-icon icon="fa-solid fa-plus" size="xl" />
@@ -37,7 +37,7 @@
             <label>Satır yapısını seçiniz</label>
           </div>
           <!-- Satır seçenekleri -->
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-2 p-3 d-flex justify-content-center align-items-center" v-for="item in sectiondataFirst" :key="item.id">
               <button class="btn" @click="getColumnData(item.kolon, item.kolon.length); appendItemToGridLayout(item.kolon); isDashboardMenuVisible = false">
                 <svg xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100" height="50" style="fill: #cecece;">
@@ -49,6 +49,26 @@
           <div class="row">
             <div class="col-md-2 p-3 d-flex justify-content-center align-items-center" v-for="item in sectiondataSecond" :key="item.id">
               <button class="btn" @click="getColumnData(item.kolon, item.kolon.length); appendItemToGridLayout(item.kolon); isDashboardMenuVisible = false">
+                <svg xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100" height="50" style="fill: #cecece;">
+                  <path :d="item.svgattr" />
+                </svg>
+              </button>
+            </div>
+          </div>-->
+
+          <!-- Satır seçenekleri -->
+          <div class="row">
+            <div class="col-md-2 p-3 d-flex justify-content-center align-items-center" v-for="item in sectiondataFirst" :key="item.id">
+              <button class="btn" @click="getColumnData(item.kolon, item.kolon.length); addItem(item.kolon); isDashboardMenuVisible = false">
+                <svg xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100" height="50" style="fill: #cecece;">
+                  <path :d="item.svgattr" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 p-3 d-flex justify-content-center align-items-center" v-for="item in sectiondataSecond" :key="item.id">
+              <button class="btn" @click="getColumnData(item.kolon, item.kolon.length); addItem(item.kolon); isDashboardMenuVisible = false">
                 <svg xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100" height="50" style="fill: #cecece;">
                   <path :d="item.svgattr" />
                 </svg>
@@ -74,6 +94,8 @@
         sectiondata: sectiondata,
         isDashboardMenuVisible: false,
         layout: [],
+        index: 0,
+        colNum: 100
       }
     },
     computed: {
@@ -125,6 +147,38 @@
             this.layout.push(itemToAppend)
           }
         }
+      },
+      addItem(kolon) {
+        for (var i = 0; i < kolon.length; i++) {
+          if (kolon.length == 1 && kolon[i].width == 100) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+            this.index++;
+          }
+          else if (kolon.length == 2 && kolon[i].width == 50) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+            this.index++;
+          }
+        }
+        // for (var j = 0; j < this.layout.length; j++) {
+        //   if (this.layout[j].x == this.layout[j + 1].x) {
+        //     this.layout[j + 1].x = this.layout[j + 1].x + kolon[i].width;
+        //   }
+        //   else {
+        //     console.log("Hata")
+        //   }
+        // }
       },
       removeItem(val) {
         const index = this.layout.map(item => item.i).indexOf(val);
