@@ -37,26 +37,6 @@
             <label>Satır yapısını seçiniz</label>
           </div>
           <!-- Satır seçenekleri -->
-          <!-- <div class="row">
-            <div class="col-md-2 p-3 d-flex justify-content-center align-items-center" v-for="item in sectiondataFirst" :key="item.id">
-              <button class="btn" @click="getColumnData(item.kolon, item.kolon.length); appendItemToGridLayout(item.kolon); isDashboardMenuVisible = false">
-                <svg xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100" height="50" style="fill: #cecece;">
-                  <path :d="item.svgattr" />
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-2 p-3 d-flex justify-content-center align-items-center" v-for="item in sectiondataSecond" :key="item.id">
-              <button class="btn" @click="getColumnData(item.kolon, item.kolon.length); appendItemToGridLayout(item.kolon); isDashboardMenuVisible = false">
-                <svg xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100" height="50" style="fill: #cecece;">
-                  <path :d="item.svgattr" />
-                </svg>
-              </button>
-            </div>
-          </div>-->
-
-          <!-- Satır seçenekleri -->
           <div class="row">
             <div class="col-md-2 p-3 d-flex justify-content-center align-items-center" v-for="item in sectiondataFirst" :key="item.id">
               <button class="btn" @click="getColumnData(item.kolon, item.kolon.length); addItem(item.kolon); isDashboardMenuVisible = false">
@@ -113,6 +93,7 @@
     methods: {
       getColumnData(kolon, length) {
         this.columns = kolon;
+        // Seçilen satır yapısındaki kolonların listesi
         console.log("Kolonlar Listesi: ", this.columns)
         for (var i = 0; i < kolon.length; i++) {
           console.log("Kolon ", i + 1, ":", kolon[i])
@@ -120,36 +101,9 @@
         this.numberOfColumns = length;
         console.log("Kolon Array'inin Eleman Sayısı: ", length)
       },
-      appendItemToGridLayout(kolon) {
-        var itemToAppend = {};
-        // Sürekli aynı ID ile append yapmaması için layout'un içinde ne kadar item varsa 1 fazlasını "i" olarak veriyorum
-        var layout_i = this.layout.length + 1;
-        for (var i = 0; i < kolon.length; i++) {
-          // Eğer tek satır seçildiyse ve o satırın width'i 100 ise...
-          if (kolon.length == 1 && kolon[i].width == 100) {
-            console.log("Length: ", kolon.length, "Width: ", kolon[i].width)
-            // Zaten tek eleman ekleneceği için x ve y'yi statik olarak 0 girebilirim burada
-            itemToAppend.x = 0;
-            itemToAppend.y = 0;
-            itemToAppend.w = kolon[i].width;
-            itemToAppend.h = 2;
-            itemToAppend.i = layout_i;
-
-            this.layout.push(itemToAppend)
-          }
-          if (kolon.length == 2 && kolon[i].width == 50) {
-            itemToAppend.x = 0;
-            itemToAppend.y = 0;
-            itemToAppend.w = kolon[i].width;
-            itemToAppend.h = 2;
-            itemToAppend.i = layout_i;
-
-            this.layout.push(itemToAppend)
-          }
-        }
-      },
       addItem(kolon) {
         for (var i = 0; i < kolon.length; i++) {
+          // Eğer seçilen satır yapısındaki kolon sayısı tek ve o kolonun genişliği 100 ise x ve y gibi değerleri statik olarak verebilirim
           if (kolon.length == 1 && kolon[i].width == 100) {
             this.layout.push({
               x: 0,
@@ -168,6 +122,128 @@
               h: 2,
               i: this.index,
             });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 3 && kolon[i].width == 33) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 4 && kolon[i].width == 25) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 2 && kolon[0].width == 33 && kolon[1].width == 66) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 2 && kolon[0].width == 66 && kolon[1].width == 33) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 3 && kolon[0].width == 25 && kolon[1].width == 25 && kolon[2].width == 50) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 3 && kolon[0].width == 50 && kolon[1].width == 25 && kolon[2].width == 25) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 3 && kolon[0].width == 25 && kolon[1].width == 50 && kolon[2].width == 25) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 5 && kolon[0].width == 20 && kolon[1].width == 20 && kolon[2].width == 20 && kolon[3].width == 20 && kolon[4].width == 20) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 6 && kolon[0].width == 16 && kolon[1].width == 16 && kolon[2].width == 16 && kolon[3].width == 16 && kolon[4].width == 16 && kolon[5].width == 16) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
+            this.index++;
+          }
+          else if (kolon.length == 3 && kolon[0].width == 16 && kolon[1].width == 66 && kolon[2].width == 16) {
+            this.layout.push({
+              x: 0,
+              y: 0,
+              w: kolon[i].width,
+              h: 2,
+              i: this.index,
+            });
+
+            // Index'lerin unique olması için her eklemede indexi artırıyorum
             this.index++;
           }
         }
@@ -184,6 +260,7 @@
         const index = this.layout.map(item => item.i).indexOf(val);
         this.layout.splice(index, 1);
 
+        // Yeniden eklemeye başladığımızda index'in güncel kalması için her remove işleminde indexi azaltıyorum
         this.index--;
       },
     },
