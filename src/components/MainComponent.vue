@@ -6,8 +6,16 @@
           <h1>Yasin Demirkaya Dynamic Draggable Sortable Dashboard</h1>
         </div>
       </div>
-      {{ layout }}
-      <!-- Grid Layout -->
+      <!-- Layout'a ilk ekleme yapıldığında burayı görünür yapıyorum -->
+      <!-- Layout arrayindeki item kadar grid-item yaratıyorum -->
+
+      <!-- Sanırım satırları bir bütün halinde tutup birbirleri arasında sorting yapmak dışında taskta belirtilen her şeyi yaptım. -->
+      <!-- Aslında amacım her satır seçiminde yeni <grid-layout>'lar oluşturmaktı. Böylece içlerinde kendi <grid-item>'ları olan unique satırlar elde etmiş olacaktım -->
+      <!-- Kullandığım kütüphanede grid-layout'lar arasında drag & drop ya da sorting gibi bir feature bulunmadığı için bu grid-layout'ları da farklı bir draggable kütüphanesi ile birbirleri arasında sortlayacaktım -->
+      <!-- Böylece taskın tamamını yapmış olacaktım ancak çok yoğun bir hafta geçirdim ve bu kadarını yapmaya ancak fırsat bulabildim -->
+      <!-- Task oldukça hoşuma gitti çünkü çalıştığım iki firmada da bu tarz dashboardlar tasarlamıştım ve bu paketlerle sıklıkla uğraşmıştım -->
+      <!-- Eğer benimle teknik mülakatta görüşmek isterseniz hem daha önce bu tarz işler yaptığım projeleri size gösterip bahsedebilirim. -->
+      <!-- Ayrıca bu taskı hazırlayan kişiden aslında nasıl yapıldığını dinlemeyi çok isterim. Şimdiden ilginiz için teşekkür ederim. -->
       <grid-layout v-if="layout != null" :layout.sync="layout" :col-num="colNum" :row-height="30" :is-draggable="true" :is-resizable="false" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
         <grid-item v-for="item in layout" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" drag-allow-from=".vue-draggable-handle" drag-ignore-from=".no-drag">
           <div class="col-md-12 d-flex flex-column justify-content-center align-items-center custom-border p-3">
@@ -29,7 +37,6 @@
           Yeni satır ekle
         </div>
       </div>
-
       <!-- Satır yapısını seçiniz... -->
       <div class="row mt-5 custom-border p-5" v-else>
         <div class="col-md-12 d-flex flex-column justify-content-center align-items-center">
@@ -102,159 +109,24 @@
         console.log("Kolon Array'inin Eleman Sayısı: ", length)
       },
       addItem(kolon) {
+        // Satırın ilk elemanının x'i 0 olacağı için bu şekilde başlatıyorum
+        var x = 0;
         for (var i = 0; i < kolon.length; i++) {
-          // Eğer seçilen satır yapısındaki kolon sayısı tek ve o kolonun genişliği 100 ise x ve y gibi değerleri statik olarak verebilirim
-          if (kolon.length == 1 && kolon[i].width == 100) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-            this.index++;
-          }
-          else if (kolon.length == 2 && kolon[i].width == 50) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
+          this.layout.push({
+            x: x,
+            y: 0,
+            w: kolon[i].width,
+            h: 2,
+            i: this.index,
+          });
+          x += kolon[i].width;
 
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 3 && kolon[i].width == 33) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
+          // Layout arrayinin objelerinin i elemanları unique olmalı bu yüzden her seferinde artırıyorum
+          this.index++;
 
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 4 && kolon[i].width == 25) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 2 && kolon[0].width == 33 && kolon[1].width == 66) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 2 && kolon[0].width == 66 && kolon[1].width == 33) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 3 && kolon[0].width == 25 && kolon[1].width == 25 && kolon[2].width == 50) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 3 && kolon[0].width == 50 && kolon[1].width == 25 && kolon[2].width == 25) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 3 && kolon[0].width == 25 && kolon[1].width == 50 && kolon[2].width == 25) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 5 && kolon[0].width == 20 && kolon[1].width == 20 && kolon[2].width == 20 && kolon[3].width == 20 && kolon[4].width == 20) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 6 && kolon[0].width == 16 && kolon[1].width == 16 && kolon[2].width == 16 && kolon[3].width == 16 && kolon[4].width == 16 && kolon[5].width == 16) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
-          else if (kolon.length == 3 && kolon[0].width == 16 && kolon[1].width == 66 && kolon[2].width == 16) {
-            this.layout.push({
-              x: 0,
-              y: 0,
-              w: kolon[i].width,
-              h: 2,
-              i: this.index,
-            });
-
-            // Index'lerin unique olması için her eklemede indexi artırıyorum
-            this.index++;
-          }
+          // Döngü kolon'un eleman sayısı kadar döneceğinden ilk elemana 0 girildikten sonra ikinci elemanın da ilk elemanın üzerine binmemesi için
+          // x'i o kolonun widthi kadar artırıyorum böylece hemen yanına konumlanıyor
         }
-        // for (var j = 0; j < this.layout.length; j++) {
-        //   if (this.layout[j].x == this.layout[j + 1].x) {
-        //     this.layout[j + 1].x = this.layout[j + 1].x + kolon[i].width;
-        //   }
-        //   else {
-        //     console.log("Hata")
-        //   }
-        // }
       },
       removeItem(val) {
         const index = this.layout.map(item => item.i).indexOf(val);
