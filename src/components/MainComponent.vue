@@ -6,16 +6,6 @@
           <h1>Yasin Demirkaya Dynamic Draggable Sortable Dashboard</h1>
         </div>
       </div>
-      <!-- Layout'a ilk ekleme yapıldığında burayı görünür yapıyorum -->
-      <!-- Layout arrayindeki item kadar grid-item yaratıyorum -->
-
-      <!-- Sanırım satırları bir bütün halinde tutup birbirleri arasında sorting yapmak dışında taskta belirtilen her şeyi yaptım. -->
-      <!-- Aslında amacım her satır seçiminde yeni <grid-layout>'lar oluşturmaktı. Böylece içlerinde kendi <grid-item>'ları olan unique satırlar elde etmiş olacaktım -->
-      <!-- Kullandığım kütüphanede grid-layout'lar arasında drag & drop ya da sorting gibi bir feature bulunmadığı için bu grid-layout'ları da farklı bir draggable kütüphanesi ile birbirleri arasında sortlayacaktım -->
-      <!-- Böylece taskın tamamını yapmış olacaktım ancak çok yoğun bir hafta geçirdim ve bu kadarını yapmaya ancak fırsat bulabildim -->
-      <!-- Task oldukça hoşuma gitti çünkü çalıştığım iki firmada da bu tarz dashboardlar tasarlamıştım ve bu paketlerle sıklıkla uğraşmıştım -->
-      <!-- Eğer benimle teknik mülakatta görüşmek isterseniz hem daha önce bu tarz işler yaptığım projeleri size gösterip bahsedebilirim. -->
-      <!-- Ayrıca bu taskı hazırlayan kişiden aslında nasıl yapıldığını dinlemeyi çok isterim. Şimdiden ilginiz için teşekkür ederim. -->
       <grid-layout v-if="layout != null" :layout.sync="layout" :col-num="colNum" :row-height="30" :is-draggable="true" :is-resizable="false" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
         <grid-item v-for="item in layout" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" drag-allow-from=".vue-draggable-handle" drag-ignore-from=".no-drag">
           <div class="col-md-12 d-flex flex-column justify-content-center align-items-center custom-border p-3">
@@ -28,7 +18,6 @@
         </grid-item>
       </grid-layout>
 
-      <!-- Yeni satır ekle... -->
       <div class="row mt-5 custom-border p-5" v-if="!isDashboardMenuVisible">
         <div class="col-md-12 d-flex flex-column justify-content-center align-items-center">
           <button class="btn btn-outline-dark rounded-pill" @click="isDashboardMenuVisible = true">
@@ -121,18 +110,13 @@
           });
           x += kolon[i].width;
 
-          // Layout arrayinin objelerinin i elemanları unique olmalı bu yüzden her seferinde artırıyorum
           this.index++;
-
-          // Döngü kolon'un eleman sayısı kadar döneceğinden ilk elemana 0 girildikten sonra ikinci elemanın da ilk elemanın üzerine binmemesi için
-          // x'i o kolonun widthi kadar artırıyorum böylece hemen yanına konumlanıyor
         }
       },
       removeItem(val) {
         const index = this.layout.map(item => item.i).indexOf(val);
         this.layout.splice(index, 1);
 
-        // Yeniden eklemeye başladığımızda index'in güncel kalması için her remove işleminde indexi azaltıyorum
         this.index--;
       },
     },
